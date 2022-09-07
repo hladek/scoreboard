@@ -2,14 +2,18 @@ from django.shortcuts import render
 from django.http import Http404
 from django.shortcuts import render
 
-from .models import Question
+from .models import Competition
 # ...
-def detail(request, question_id):
+def board(request, competition_id):
     try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
+        competition = Competition.objects.get(pk=competition_id)
+    except Competition.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, 'polls/detail.html', {'question': question})
+    return render(request, 'contest/board.html', {'competition': competition})
+
+def index(request):
+    competitions = Competition.objects.all()
+    return render(request,"contest/competitions.html",{"competitions":competitions})
 
 # Create your views here.
 from . import views

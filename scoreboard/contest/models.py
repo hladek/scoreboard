@@ -11,7 +11,7 @@ class Team(models.Model):
     name = models.CharField(max_length=200)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     def __str__(self):
-        return self.name
+        return "Team:{}@{}".format(self.name, self.contest.name)
 
 
 class Competition(models.Model):
@@ -21,7 +21,7 @@ class Competition(models.Model):
     participants = models.ManyToManyField(Team)
 
     def __str__(self):
-        return self.name
+        return "Competition:{}@{}".format(self.name, self.contest.name)
 
 class Run(models.Model):
     start_time = models.DateTimeField()
@@ -30,3 +30,5 @@ class Run(models.Model):
     judge_comment = models.CharField(max_length=200)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
+    def __str__(self):
+        return "Run:{}@{}".format(self.start_time, self.team.name)
