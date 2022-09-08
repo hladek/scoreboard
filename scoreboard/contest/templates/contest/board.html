@@ -1,14 +1,32 @@
-<h1> Board </h1>
+
+<h1> Score Board {{competition.name}}</h1>
+{{competition.contest.name}}
+
+<h3>Participants</h3>
 <p>
-{{competition.name}}
+<ul>
+  {% for item in participants %}
+    <li>{{ item.name }}</li>
+  {% endfor %}
+</ul>
 </p>
 
-Participants:
-<p>
-{{competition.participants}}
-</p>
-
-Runs:
-<p>
-{{competition.runs}}
-</p>
+<h3>Runs</h3>
+<table>
+  <tr>
+    <td>Name</td>
+    <td> Start</td>
+    <td> End </td>
+    <td> Points</td>
+    <td> Comment</td>
+  </tr>
+  {% for item in runs %}
+  <tr>
+    <td>{{ item.team.name }}</td>
+    <td>{{ item.start_time }}</td>
+    <td>{{ item.end_time }}</td>
+    <td>{{ item.result_value }}</td>
+    <td>{{ item.judge_comment }}</td>
+  </tr>
+  {% endfor %}
+</table>
