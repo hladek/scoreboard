@@ -2,11 +2,19 @@
 <h1> Score Board {{competition.name}}</h1>
 {{competition.contest.name}}
 
-<h3>Participants</h3>
+<h3>Participants<>
 <p>
 <ul>
   {% for item in participants %}
     <li>{{ item.name }}</li>
+  {% endfor %}
+</ul>
+</p>
+
+<p>
+<ul>
+  {% for item in results %}
+    <li>{{ item }}</li>
   {% endfor %}
 </ul>
 </p>
@@ -25,7 +33,7 @@
     <td>{{ item.team.name }}</td>
     <td>{{ item.start_time }}</td>
     <td>{{ item.end_time }}</td>
-    <td>{{ item.result_value }}</td>
+    <td>{{ item.score }}</td>
     <td>{{ item.judge_comment }}</td>
   </tr>
   {% endfor %}
