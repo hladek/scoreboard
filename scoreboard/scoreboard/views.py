@@ -1,10 +1,8 @@
 from django.shortcuts import render
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import redirect
 
 def index(request):
-    return render(request,"scoreboard/index.html")
+    return redirect("contest/")
 
-# Create your views here.
-from . import views
 

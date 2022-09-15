@@ -1,6 +1,9 @@
+<a href="/admin">Admin</a>
+<h1>Competitions</h1>
 {{competitions}}
 <ul>
 {% for item in competitions %}
 <li><a href="{% url 'contest:board' item.id  %}">{{ item }}</a></li>
 {% endfor %}
 </ul>
+<h2>Past competitions</h2>
