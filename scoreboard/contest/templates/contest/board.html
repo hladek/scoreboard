@@ -1,7 +1,9 @@
-<h1> Score Board {{competition.name}}</h1>
+{% extends "contest/base.html" %}
+{% block content %}
+<h1> {{competition.name}}</h1>
 {{competition.contest.name}}
 
-<h3>Participants<>
+<h3>Participants</h3>
 <p>
 <ul>
   {% for item in participants %}
@@ -9,7 +11,7 @@
   {% endfor %}
 </ul>
 </p>
-
+<h3>Score Board</h3>
 <p>
 <ul>
   {% for item in results %}
@@ -37,3 +39,5 @@
   </tr>
   {% endfor %}
 </table>
+
+{% endblock %}

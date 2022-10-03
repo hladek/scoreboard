@@ -3,9 +3,9 @@ from django.http import Http404
 from django.shortcuts import render
 
 from django.db.models import Max
-from .models import Competition,Run
+from .models import Competition,Contest,Run
 # ...
-def board(request, competition_id):
+def competition_board(request, competition_id):
     try:
         competition = Competition.objects.get(pk=competition_id)
         participants = competition.participants.all()
@@ -17,10 +17,16 @@ def board(request, competition_id):
         raise Http404("Question does not exist")
     return render(request, 'contest/board.html', {'competition': competition,"participants":participants,"runs":runs,"results":results})
 
-def index(request):
-    competitions = Competition.objects.all()
-    return render(request,"contest/competitions.html",{"competitions":competitions})
+# TODO - select from contest
+def contest_competitions(request,contest_id):
+    contest = Contest.objects.get(pk=contest_id)
+    competitions = contest.competition_set.all()
+    teams = contest.team_set.all()
+    return render(request,"contest/competitions.html",{"contest":contest,"teams":teams,"competitions":competitions})
 
+def index(request):
+    contests = Contest.objects.all()
+    return render(request,"contest/index.html",{"contests":contests})
 # Create your views here.
 from . import views
 

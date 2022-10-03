@@ -5,6 +5,7 @@ from django.db import models
 class Contest(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(default="")
+    is_active = models.BooleanField(default=True)
     def __str__(self):
         return self.name
 
@@ -19,6 +20,7 @@ class Team(models.Model):
 class Competition(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(default="")
+    is_active = models.BooleanField(default=True)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     runs = models.ManyToManyField(Team,through="Run",related_name="runs")
     participants = models.ManyToManyField(Team)

@@ -1,9 +1,18 @@
-<a href="/admin">Admin</a>
-<h1>Competitions</h1>
-{{competitions}}
+{% extends "contest/base.html" %}
+{% block content %}
+<h1>Competitions of {{contest.name}}</h1>
+{{contest.description}}
+<h2>Participants</h2>
 <ul>
-{% for item in competitions %}
-<li><a href="{% url 'contest:board' item.id  %}">{{ item }}</a></li>
+{% for item in teams %}
+<li> {{item}} </li>
 {% endfor %}
 </ul>
-<h2>Past competitions</h2>
+<h2>Competitions</h2>
+<ul>
+{% for item in competitions %}
+<li><a href="{% url 'contest:competition_board' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
