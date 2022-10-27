@@ -7,7 +7,7 @@
 <p>
 <ul>
   {% for item in competitions %}
-    <li>{{ item.name }}</li>
+    <li><a href="{% url 'contest:contest_competitions' item.id  %}">{{ item.name }}</a> {{item.description}} {{item.is_active}}</li>
   {% endfor %}
 </ul>
 </p>

@@ -7,7 +7,7 @@
 <p>
 <ul>
   {% for item in participants %}
-    <li>{{ item.name }}</li>
+    <li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
   {% endfor %}
 </ul>
 </p>
@@ -15,8 +15,9 @@
 <p>
 <ul>
   {% for item in results %}
-    <li>{{ item }}</li>
+    <li>{{ item.name }} {{ item.max_score }}</li>
   {% endfor %}
+
 </ul>
 </p>
 

@@ -9,13 +9,14 @@ def competition_board(request, competition_id):
     try:
         competition = Competition.objects.get(pk=competition_id)
         participants = competition.participants.all()
+        parti = competition.participants.all().annotate(max_score=Max("run__score"))
         runs = Run.objects.filter(competition_id=competition.id)
         results = Run.objects.values("team").annotate(max_score=Max("score")).filter(competition_id=competition.id)
         #results = Run.objects.raw("SELECT team_id,max('score') FROM runs WHERE competition_id=? GROUP BY team_id",params=(competition_id,));
         #aggregate(points=Max("score")).filter(competition_id=competition.id)
     except Competition.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, 'contest/board.html', {'competition': competition,"participants":participants,"runs":runs,"results":results})
+    return render(request, 'contest/board.html', {'competition': competition,"participants":participants,"runs":runs,"results":parti})
 
 # TODO - select from contest
 def contest_competitions(request,contest_id):
