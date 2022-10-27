@@ -1,0 +1,16 @@
+{% extends "contest/base.html" %}
+{% block content %}
+<h1> {{team.name}}</h1>
+{{team.description}}
+{{team.contest.name}}
+<h3>Competition results</h3>
+<p>
+<ul>
+  {% for item in competitions %}
+    <li>{{ item.name }}</li>
+  {% endfor %}
+</ul>
+</p>
+
+
+{% endblock %}

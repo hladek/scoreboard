@@ -3,7 +3,7 @@ from django.http import Http404
 from django.shortcuts import render
 
 from django.db.models import Max
-from .models import Competition,Contest,Run
+from .models import Competition,Contest,Run,Team
 # ...
 def competition_board(request, competition_id):
     try:
@@ -23,6 +23,12 @@ def contest_competitions(request,contest_id):
     competitions = contest.competition_set.all()
     teams = contest.team_set.all()
     return render(request,"contest/competitions.html",{"contest":contest,"teams":teams,"competitions":competitions})
+
+def contest_team(request,team_id):
+    team = Team.objects.get(pk=team_id)
+    competitions = team.competition_set.all()
+    # todo calculate team results for each competition
+    return render(request,"contest/teams.html",{"team":team,"competitions":competitions})
 
 def index(request):
     contests = Contest.objects.all()

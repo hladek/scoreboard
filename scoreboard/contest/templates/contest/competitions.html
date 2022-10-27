@@ -5,7 +5,7 @@
 <h2>Participants</h2>
 <ul>
 {% for item in teams %}
-<li> {{item}} </li>
+<li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
 {% endfor %}
 </ul>
 <h2>Competitions</h2>
