@@ -2,3 +2,4 @@ django
 daphne
 Twisted[tls,http2]
 django-environ
+mysqlclient

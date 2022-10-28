@@ -8,5 +8,9 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
 WORKDIR /code/scoreboard
-CMD daphne scoreboard.asgi:application
+# Configuring the app - these have to be changed in production!!!
+ENV SECRET_KEY qqqqq
+ENV DATABASE_URL sqlite:///db.sqlite3
+ENV DEBUG False
+CMD daphne -p 8000 -b 0.0.0.0 scoreboard.asgi:application
 

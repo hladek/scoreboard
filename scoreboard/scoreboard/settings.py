@@ -16,7 +16,11 @@ import environ
 root = environ.Path(__file__) - 3  # get root of the project
 env = environ.Env(
  # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list,[]),
+    CSRF_TRUSTED_ORIGINS=(list,[]),
+    SECRET_KEY=(str,"QQQaasas"),
+    STATIC_ROOT=(str,"./static")
 )
 environ.Env.read_env()  # reading .env file
 
@@ -35,8 +39,14 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
+# Is this necessary?
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+
+# Setup support for proxy headers
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
@@ -124,6 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT= env("STATIC_ROOT")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
