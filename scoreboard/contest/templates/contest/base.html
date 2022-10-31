@@ -1,11 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {% block title %}<title>Local Library</title>{% endblock %}
+  {% block title %}<title>Notroclubs Scoreboard</title>{% endblock %}
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
-<a href="/admin">Admin</a>
-<a href="/contest">Contests</a>
+    <header>
+    <img width=100 src="{% static 'contest/img/nitrocropped.png' %}">
+    <nav>
+      <a href="/admin">Admin</a>
+      <a href="/contest">Contests</a>
+    </nav>
+    </header>
   {% block content %}<!-- default content text (typically empty) -->{% endblock %}
 </body>
 </html>

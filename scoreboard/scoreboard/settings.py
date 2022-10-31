@@ -20,7 +20,8 @@ env = environ.Env(
     ALLOWED_HOSTS=(list,[]),
     CSRF_TRUSTED_ORIGINS=(list,[]),
     SECRET_KEY=(str,"QQQaasas"),
-    STATIC_ROOT=(str,"./static")
+    STATIC_ROOT=(str,"./static"),
+    DATABASE_URL=(environ.Env.db_url,"sqlite:///db.sqlite3")
 )
 environ.Env.read_env()  # reading .env file
 
