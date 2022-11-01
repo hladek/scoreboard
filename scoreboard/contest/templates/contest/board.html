@@ -3,21 +3,25 @@
 <h1> {{competition.name}}</h1>
 {{competition.contest.name}}
 
+<h3>Score Board</h3>
+<table>
+    <tr>
+  {% for item in results %}
+    <td>{{ item.name }} </td>
+  {% endfor %}
+  </tr>
+    <tr>
+  {% for item in results %}
+    <td>{{ item.max_score }}</td>
+  {% endfor %}
+  </tr>
+  </table>
 <h3>Participants</h3>
 <p>
 <ul>
   {% for item in participants %}
     <li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
   {% endfor %}
-</ul>
-</p>
-<h3>Score Board</h3>
-<p>
-<ul>
-  {% for item in results %}
-    <li>{{ item.name }} {{ item.max_score }}</li>
-  {% endfor %}
-
 </ul>
 </p>
 

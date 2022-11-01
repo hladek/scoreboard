@@ -6,14 +6,14 @@
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
-    <header>
+  {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+    <footer>
     <img width=100 src="{% static 'contest/img/nitrocropped.png' %}">
     <nav>
       <a href="/admin">Admin</a>
       <a href="/contest">Contests</a>
     </nav>
-    </header>
-  {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+    </footer>
 </body>
 </html>
 

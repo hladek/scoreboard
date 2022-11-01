@@ -32,8 +32,10 @@ def contest_team(request,team_id):
     return render(request,"contest/teams.html",{"team":team,"competitions":competitions})
 
 def index(request):
-    contests = Contest.objects.all()
-    return render(request,"contest/index.html",{"contests":contests})
+    contests = list(Contest.objects.all())
+    active_contests = filter(lambda x:x.is_active,contests)
+    past_contests = filter(lambda x:not x.is_active,contests)
+    return render(request,"contest/index.html",{"active_contests":active_contests,"past_contests":past_contests})
 # Create your views here.
 from . import views
 
