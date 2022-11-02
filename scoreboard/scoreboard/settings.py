@@ -21,8 +21,9 @@ env = environ.Env(
     CSRF_TRUSTED_ORIGINS=(list,[]),
     SECRET_KEY=(str,"QQQaasas"),
     STATIC_ROOT=(str,"./static"),
-    DATABASE_URL=(environ.Env.db_url,"sqlite:///db.sqlite3")
+    DATABASE_URL=(str,"sqlite:///db.sqlite3")
 )
+env.smart_cast = False
 environ.Env.read_env()  # reading .env file
 
 from pathlib import Path
