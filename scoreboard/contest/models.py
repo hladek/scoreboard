@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 
@@ -35,5 +36,10 @@ class Run(models.Model):
     judge_comment = models.CharField(max_length=200,help_text="Comment by a Judge")
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Who performed the run")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="source competition")
+    @property
+    def duration(self):
+        dur = self.end_time - self.start_time
+        return dur
+
     def __str__(self):
         return "Run:{}@{}".format(self.start_time, self.team.name)

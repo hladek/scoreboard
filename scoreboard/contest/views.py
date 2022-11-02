@@ -15,7 +15,7 @@ def competition_board(request, competition_id):
         #results = Run.objects.raw("SELECT team_id,max('score') FROM runs WHERE competition_id=? GROUP BY team_id",params=(competition_id,));
         #aggregate(points=Max("score")).filter(competition_id=competition.id)
     except Competition.DoesNotExist:
-        raise Http404("Question does not exist")
+        raise Http404("Competition does not exist")
     return render(request, 'contest/board.html', {'competition': competition,"participants":participants,"runs":runs,"results":parti})
 
 # TODO - select from contest
@@ -27,7 +27,7 @@ def contest_competitions(request,contest_id):
 
 def contest_team(request,team_id):
     team = Team.objects.get(pk=team_id)
-    competitions = team.competition_set.all()
+    competitions = team.competition_set.all().annotate(max_score=Max("run__score"))
     # todo calculate team results for each competition
     return render(request,"contest/teams.html",{"team":team,"competitions":competitions})
 

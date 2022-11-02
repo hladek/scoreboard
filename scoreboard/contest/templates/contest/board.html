@@ -7,7 +7,7 @@
 <table>
     <tr>
   {% for item in results %}
-    <td>{{ item.name }} </td>
+    <td><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> </td>
   {% endfor %}
   </tr>
     <tr>
@@ -30,7 +30,7 @@
   <tr>
     <td>Name</td>
     <td> Start</td>
-    <td> End </td>
+    <td> Duration </td>
     <td> Points</td>
     <td> Comment</td>
   </tr>
@@ -38,7 +38,7 @@
   <tr>
     <td>{{ item.team.name }}</td>
     <td>{{ item.start_time }}</td>
-    <td>{{ item.end_time }}</td>
+    <td>{{ item.duration }}</td>
     <td>{{ item.score }}</td>
     <td>{{ item.judge_comment }}</td>
   </tr>
