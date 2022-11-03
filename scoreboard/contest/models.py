@@ -4,9 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class ItemStates(models.TextChoices):
-    OPEN = 'OPEN', _('Running')
     NEW = 'NEW', _('In preparation')
-    CLOSED = 'CLOSED', _('In evaluation')
+    OPEN = 'OPEN', _('Running')
+    CLOSED = 'CLOSED', _('No modifications')
     OLD = 'OLD', _('Over')
 
 class Contest(models.Model):
