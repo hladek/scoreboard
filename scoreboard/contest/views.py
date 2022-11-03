@@ -3,7 +3,8 @@ from django.http import Http404
 from django.shortcuts import render
 
 from django.db.models import Max
-from .models import Competition,Contest,Run,Team
+from .models import Competition,Contest,Run,Team,ItemStates
+
 # ...
 def competition_board(request, competition_id):
     try:
@@ -33,8 +34,8 @@ def contest_team(request,team_id):
 
 def index(request):
     contests = list(Contest.objects.all())
-    active_contests = filter(lambda x:x.is_active,contests)
-    past_contests = filter(lambda x:not x.is_active,contests)
+    active_contests = filter(lambda x:x.status == ItemStates.OPEN or x.status == ItemStates.CLOSED,contests)
+    past_contests = filter(lambda x:x.status == ItemStates.OLD,contests)
     return render(request,"contest/index.html",{"active_contests":active_contests,"past_contests":past_contests})
 # Create your views here.
 from . import views
