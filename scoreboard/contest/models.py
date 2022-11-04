@@ -41,6 +41,9 @@ class Competition(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     runs = models.ManyToManyField(Team,through="Run",related_name="runs",help_text="Competition has more runs from different teams.")
     participants = models.ManyToManyField(Team,help_text="There can be more participants in a competition")
+    winner = models.ForeignKey(Team,on_delete=models.CASCADE,help_text="Winning team of the competition",null=True,related_name="winner")
+    result_comment = models.TextField(default="",help_text="Comment to the final results")
+    winner_points = models.FloatField(help_text="Assignmend by judge",null=True) 
 
     def __str__(self):
         return "Competition:{}@{}".format(self.name, self.contest.name)
@@ -48,10 +51,11 @@ class Competition(models.Model):
 class Run(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    score = models.IntegerField(help_text="Assigned by a Judge")
+    score = models.FloatField(help_text="Assigned by a Judge")
     judge_comment = models.CharField(max_length=200,help_text="Comment by a Judge",blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Who performed the run")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="source competition")
+
     @property
     def duration(self):
         dur = self.end_time - self.start_time

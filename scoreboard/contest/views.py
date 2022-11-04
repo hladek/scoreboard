@@ -19,7 +19,7 @@ def competition_board(request, competition_id):
         raise Http404("Competition does not exist")
     return render(request, 'contest/board.html', {'competition': competition,"participants":participants,"runs":runs,"results":parti})
 
-# TODO - select from contest
+# TODO - calculate competitions winners and contest results
 def contest_competitions(request,contest_id):
     contest = Contest.objects.get(pk=contest_id)
     competitions = contest.competition_set.all()
