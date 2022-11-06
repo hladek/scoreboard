@@ -17,7 +17,7 @@ def competition_board(request, competition_id):
         #aggregate(points=Max("score")).filter(competition_id=competition.id)
     except Competition.DoesNotExist:
         raise Http404("Competition does not exist")
-    return render(request, 'contest/board.html', {'competition': competition,"participants":participants,"runs":runs,"results":parti})
+    return render(request, 'contest/board.html', {"contest":competition.contest,'competition': competition,"participants":participants,"runs":runs,"results":parti})
 
 # TODO - calculate competitions winners and contest results
 def contest_competitions(request,contest_id):
@@ -30,7 +30,7 @@ def contest_team(request,team_id):
     team = Team.objects.get(pk=team_id)
     competitions = team.competition_set.all().annotate(max_score=Max("run__score"))
     # todo calculate team results for each competition
-    return render(request,"contest/teams.html",{"team":team,"competitions":competitions})
+    return render(request,"contest/teams.html",{"contest":team.contest,"team":team,"competitions":competitions})
 
 def index(request):
     contests = list(Contest.objects.all())

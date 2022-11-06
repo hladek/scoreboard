@@ -11,12 +11,16 @@
 <ul>
 {% for item in teams %}
 <li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}} 
-
-{% for witem in item.winner.all %}
-{{witem.name}} {{witem.winner_points|floatformat:2}}
-{% empty %}
-no wins
-{% endfor %}
+    <p>
+    {% if item.winner.all %} 
+        Winner:
+    {% endif %}
+    {% for witem in item.winner.all %}
+        {{witem.name}} {{witem.winner_points|floatformat:2}}
+    {% empty %}
+        no wins
+    {% endfor %}
+    </p>
 
 </li>
 {% endfor %}
@@ -30,7 +34,7 @@ no wins
 <tr>
     <td><a href="{% url 'contest:competition_board' item.id  %}">{{ item.name }}</a> {{item.description}}</td>
     <td> {{item.status}}</td>
-    {% if item.winner%} 
+    {% if item.winner %} 
     <td> {{item.winner.name}}</td><td> {{item.winner_points|floatformat:2}}</td><td> {{item.result_comment}} </td> 
 
     {% else %}
