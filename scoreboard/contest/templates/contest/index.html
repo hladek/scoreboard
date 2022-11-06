@@ -1,11 +1,13 @@
 {% extends "contest/base.html" %}
 {% block content %}
+    {% if active_contests %}
     <h1>Contests</h1>
     <ul>
     {% for item in active_contests %}
     <li><a href="{% url 'contest:contest_competitions' item.id  %}">{{ item.name }}</a> {{item.description}} </li>
     {% endfor %}
     </ul>
+    {% endif %}
     {% if past_contests|length > 0 %}
     <h2>Previous Contests</h2>
         <ul>

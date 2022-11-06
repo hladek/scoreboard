@@ -1,18 +1,43 @@
 {% extends "contest/base.html" %}
 {% block content %}
 <h1>{{contest.name}}</h1>
+<div>
 {{contest.description}}
+</div>
+<div>
+{{contest.rules}}
+</div>
 <h2>Participants</h2>
 <ul>
 {% for item in teams %}
-<li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
+<li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}} 
+
+{% for witem in item.winner.all %}
+{{witem.name}} {{witem.winner_points|floatformat:2}}
+{% empty %}
+no wins
+{% endfor %}
+
+</li>
 {% endfor %}
 </ul>
 <h2>Competitions</h2>
-<ul>
+<table>
+    <tr>
+        <td>Name </td><td> Status</td><td> Winner</td> <td>Points</td> <td>Comment</td>
+    </tr>
 {% for item in competitions %}
-<li><a href="{% url 'contest:competition_board' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
+<tr>
+    <td><a href="{% url 'contest:competition_board' item.id  %}">{{ item.name }}</a> {{item.description}}</td>
+    <td> {{item.status}}</td>
+    {% if item.winner%} 
+    <td> {{item.winner.name}}</td><td> {{item.winner_points|floatformat:2}}</td><td> {{item.result_comment}} </td> 
+
+    {% else %}
+    <td> still running </td><td> </td><td>  </td> 
+    {% endif %}
+</tr>
 {% endfor %}
-</ul>
+</table>
 
 {% endblock %}

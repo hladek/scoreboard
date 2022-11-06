@@ -22,8 +22,8 @@ def competition_board(request, competition_id):
 # TODO - calculate competitions winners and contest results
 def contest_competitions(request,contest_id):
     contest = Contest.objects.get(pk=contest_id)
-    competitions = contest.competition_set.all()
-    teams = contest.team_set.all()
+    competitions = contest.competition_set.select_related()
+    teams = contest.team_set.select_related().all()
     return render(request,"contest/competitions.html",{"contest":contest,"teams":teams,"competitions":competitions})
 
 def contest_team(request,team_id):
