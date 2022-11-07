@@ -60,7 +60,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # https://django-ckeditor.readthedocs.io/en/latest/
+    "ckeditor"
 ]
+
+#CKEDITOR_CONFIGS = {
+#    'default': {
+#        'toolbar': 'Basic',
+#    },
+#}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
