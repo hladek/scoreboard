@@ -39,8 +39,8 @@
   <tr>
     <td>{{ item.team.name }}</td>
     <td>{{ item.start_time }}</td>
-    <td>{{ item.duration }}</td>
-    <td>{{ item.score }}</td>
+    <td>{% if item.end_time %} {{ item.score|floatformat:2 }} {% else %} running {% endif %}</td>
+    <td>{% if item.score %} {{ item.score|floatformat:2 }} {% else %} no evaluation {% endif %}</td>
     <td>{{ item.judge_comment }}</td>
   </tr>
   {% endfor %}

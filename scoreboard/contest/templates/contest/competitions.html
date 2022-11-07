@@ -32,7 +32,7 @@
     </tr>
 {% for item in competitions %}
 <tr>
-    <td><a href="{% url 'contest:competition_board' item.id  %}">{{ item.name }}</a> {{item.description}}</td>
+    <td><a href="{% url 'contest:competition_board' item.id  %}">{{ item.name }}</a> </td>
     <td> {{item.status}}</td>
     {% if item.winner %} 
     <td> {{item.winner.name}}</td><td> {{item.winner_points|floatformat:2}}</td><td> {{item.result_comment}} </td> 

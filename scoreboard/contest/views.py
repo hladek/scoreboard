@@ -8,20 +8,18 @@ from .models import Competition,Contest,Run,Team,ItemStates
 # ...
 def competition_board(request, competition_id):
     try:
+        # TODO add timer
         competition = Competition.objects.get(pk=competition_id)
-        participants = competition.participants.all()
-        parti = competition.participants.all().annotate(max_score=Max("run__score"))
-        runs = Run.objects.filter(competition_id=competition.id)
-        results = Run.objects.values("team").annotate(max_score=Max("score")).filter(competition_id=competition.id)
-        #results = Run.objects.raw("SELECT team_id,max('score') FROM runs WHERE competition_id=? GROUP BY team_id",params=(competition_id,));
-        #aggregate(points=Max("score")).filter(competition_id=competition.id)
+        participants = competition.participants.all().order_by("name")
+        parti = competition.participants.all().annotate(max_score=Max("run__score")).filter(run__competition_id=competition.id)
+        runs = Run.objects.filter(competition_id=competition.id).order_by("-score","team__name","start_time")
     except Competition.DoesNotExist:
         raise Http404("Competition does not exist")
     return render(request, 'contest/board.html', {"contest":competition.contest,'competition': competition,"participants":participants,"runs":runs,"results":parti})
 
-# TODO - calculate competitions winners and contest results
 def contest_competitions(request,contest_id):
     contest = Contest.objects.get(pk=contest_id)
+    # TODO sort
     competitions = contest.competition_set.select_related()
     teams = contest.team_set.select_related().all()
     return render(request,"contest/competitions.html",{"contest":contest,"teams":teams,"competitions":competitions})
@@ -29,6 +27,7 @@ def contest_competitions(request,contest_id):
 def contest_team(request,team_id):
     team = Team.objects.get(pk=team_id)
     competitions = team.competition_set.all().annotate(max_score=Max("run__score"))
+    #.filter(run__competition_id="competition__id")
     # todo calculate team results for each competition
     return render(request,"contest/teams.html",{"contest":team.contest,"team":team,"competitions":competitions})
 

@@ -43,7 +43,9 @@ class Competition(models.Model):
     )
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     runs = models.ManyToManyField(Team,through="Run",related_name="runs",help_text="Competition has more runs from different teams.")
+    # TODO - add constraint to Team to current contest
     participants = models.ManyToManyField(Team,help_text="There can be more participants in a competition")
+    # TODO - add constraint to Team to current contest
     winner = models.ForeignKey(Team,on_delete=models.CASCADE,help_text="Winning team of the competition",null=True,blank=True,related_name="winner")
     result_comment = models.TextField(default="",blank=True,help_text="Comment to the final results")
     winner_points = models.FloatField(help_text="Assignmend by judge",null=True,blank=True) 
@@ -54,8 +56,9 @@ class Competition(models.Model):
 class Run(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    score = models.FloatField(help_text="Assigned by a Judge")
+    score = models.FloatField(help_text="Assigned by a Judge",blank=True,null=True)
     judge_comment = models.CharField(max_length=200,help_text="Comment by a Judge",blank=True)
+    # TODO - add constraint to Team to current competition contest
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Who performed the run")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="source competition")
 
