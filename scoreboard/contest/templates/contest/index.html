@@ -8,7 +8,7 @@
     {% endfor %}
     </ul>
     {% endif %}
-    {% if past_contests %}
+    {% if past_contests.all %}
     <h2>Previous Contests</h2>
         <ul>
         {% for item in past_contests %}

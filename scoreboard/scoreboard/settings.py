@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # https://django-ckeditor.readthedocs.io/en/latest/
-    "ckeditor"
+    "ckeditor",
 ]
 
 #CKEDITOR_CONFIGS = {
