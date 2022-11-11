@@ -5,7 +5,7 @@
 {{competition.contest.name}}
 </div>
 <h3>Score Board</h3>
-<table>
+<a href="{% url 'contest:frame_board' competition.id  %}">View in frame</a> </td>>
     <tr>
   {% for item in results %}
     <td><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> </td>

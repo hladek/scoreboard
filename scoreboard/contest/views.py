@@ -5,17 +5,28 @@ from django.shortcuts import render
 from django.db.models import Max
 from .models import Competition,Contest,Run,Team,ItemStates
 
+from django.views.decorators.clickjacking import xframe_options_exempt
+
+def get_competition_results(competition):
+    return competition.participants.all().annotate(max_score=Max("run__score")).filter(run__competition_id=competition.id)
+
+@xframe_options_exempt
+def frame_board(request,competition_id):
+    competition = Competition.objects.get(pk=competition_id)
+    parti = get_competition_results(competition)
+    return render(request, 'contest/frame_board.html', {"results":parti})
+
 # ...
 def competition_board(request, competition_id):
     try:
         # TODO add timer
         competition = Competition.objects.get(pk=competition_id)
         participants = competition.participants.all().order_by("name")
-        parti = competition.participants.all().annotate(max_score=Max("run__score")).filter(run__competition_id=competition.id)
+        parti = get_competition_results(competition_id)
         runs = Run.objects.filter(competition_id=competition.id).order_by("-score","team__name","start_time")
     except Competition.DoesNotExist:
         raise Http404("Competition does not exist")
-    return render(request, 'contest/board.html', {"contest":competition.contest,'competition': competition,"participants":participants,"runs":runs,"results":parti})
+    return render(request, 'contest/competition_board.html', {"contest":competition.contest,'competition': competition,"participants":participants,"runs":runs,"results":parti})
 
 def contest_competitions(request,contest_id):
     contest = Contest.objects.get(pk=contest_id)
