@@ -1,11 +1,10 @@
 {% extends "contest/base.html" %}
 {% block content %}
-<h1> {{competition.name}}</h1>
-<div>
-{{competition.contest.name}}
-</div>
-<h3>Score Board</h3>
-<a href="{% url 'contest:frame_board' competition.id  %}">View in frame</a> </td>>
+
+<h3>{{competition.name}}</h3>
+<a href="{% url 'contest:frame_board' competition.id  %}"> View in frame</a>
+
+<table>
     <tr>
   {% for item in results %}
     <td><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> </td>
@@ -19,32 +18,14 @@
 </table>
 
 <h3>Participants</h3>
-<p>
 <ul>
   {% for item in participants %}
     <li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
   {% endfor %}
 </ul>
-</p>
 
 <h3>Runs</h3>
-<table>
-  <tr>
-    <td>Name</td>
-    <td> Start</td>
-    <td> Duration </td>
-    <td> Points</td>
-    <td> Comment</td>
-  </tr>
-  {% for item in runs %}
-  <tr>
-    <td>{{ item.team.name }}</td>
-    <td>{{ item.start_time }}</td>
-    <td>{% if item.end_time %} {{ item.score|floatformat:2 }} {% else %} running {% endif %}</td>
-    <td>{% if item.score %} {{ item.score|floatformat:2 }} {% else %} no evaluation {% endif %}</td>
-    <td>{{ item.judge_comment }}</td>
-  </tr>
-  {% endfor %}
-</table>
+<a href="{% url 'contest:frame_runs' competition.id  %}"> View in frame</a>
+{% include "contest/runs.html"  %}
 
 {% endblock %}

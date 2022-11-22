@@ -6,11 +6,11 @@
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
-    <header>
         {% if contest %}
+        <h2>
         <a href="{% url 'contest:contest_competitions' contest.id  %}">{{ contest.name }}</a> 
+        </h2>
         {% endif %}
-    </header>
   {% block content %}<!-- default content text (typically empty) -->{% endblock %}
     <footer>
     <img width=100 src="{% static 'contest/img/nitrocropped.png' %}">

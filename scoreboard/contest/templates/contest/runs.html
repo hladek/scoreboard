@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    <td>Name</td>
+    <td> Start</td>
+    <td> Duration </td>
+    <td> Points</td>
+    <td> Comment</td>
+  </tr>
+  {% for item in runs %}
+  <tr>
+    <td>{{ item.team.name }}</td>
+    <td>{{ item.start_time }}</td>
+    <td>{% if item.end_time %} {{ item.score|floatformat:2 }} {% else %} running {% endif %}</td>
+    <td>{% if item.score %} {{ item.score|floatformat:2 }} {% else %} no evaluation {% endif %}</td>
+    <td>{{ item.judge_comment }}</td>
+  </tr>
+  {% endfor %}
+</table>

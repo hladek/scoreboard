@@ -1,15 +1,23 @@
 {% extends "contest/frame_base.html" %}
 {% block content %}
-<h3>Score Board</h3>
+    <h3>{{competition.name}}</h3>
+<p>
+{{competition.description}}
+</p>
 <table>
     <tr>
   {% for item in results %}
-    <td>{{ item.name }}</td>
+  <td><b>{{ item.name }}</b></td>
   {% endfor %}
   </tr>
     <tr>
   {% for item in results %}
-    <td>{{ item.max_score }}</td>
+    <td>{{ item.description }}</td>
+  {% endfor %}
+  </tr>
+    <tr>
+  {% for item in results %}
+  <td><center><font size="6" >{{ item.max_score|floatformat:2 }}</font></center></td>
   {% endfor %}
   </tr>
 </table>
