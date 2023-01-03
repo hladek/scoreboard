@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Team,Contest,Run,Competition
+from .models import Team,Contest,Run,Competition,Result
 
 #admin.site.register(Team)
 
@@ -14,7 +14,7 @@ from .models import Team,Contest,Run,Competition
 
 #admin.site.register(Contest,ContestAdmin)
 admin.site.register(Contest)
-
+admin.site.register(Result)
 admin.site.register(Team)
 admin.site.register(Competition)
 admin.site.register(Run)

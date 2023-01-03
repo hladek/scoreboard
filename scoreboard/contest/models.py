@@ -43,15 +43,20 @@ class Competition(models.Model):
     )
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     runs = models.ManyToManyField(Team,through="Run",related_name="runs",help_text="Competition has more runs from different teams.")
-    # TODO - add constraint to Team to current contest
-    participants = models.ManyToManyField(Team,help_text="There can be more participants in a competition")
-    # TODO - add constraint to Team to current contest
-    winner = models.ForeignKey(Team,on_delete=models.CASCADE,help_text="Winning team of the competition",null=True,blank=True,related_name="winner")
-    result_comment = models.TextField(default="",blank=True,help_text="Comment to the final results")
-    winner_points = models.FloatField(help_text="Assignmend by judge",null=True,blank=True) 
 
     def __str__(self):
         return "Competition:{}@{}".format(self.name, self.contest.name)
+
+class Result(models.Model):
+    score = models.FloatField()
+    comment = models.TextField(default="",blank=True,help_text="Comment to the participation")
+    # TODO - add constraint to Team to current contest
+    team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
+    class Meta:
+        unique_together = (("team","competition"),)
+    def __str__(self):
+        return "Result:{}@{}".format(self.team.name, self.competition.name)
 
 class Run(models.Model):
     start_time = models.DateTimeField()

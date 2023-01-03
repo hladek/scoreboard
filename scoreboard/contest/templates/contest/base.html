@@ -6,17 +6,15 @@
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
-        {% if contest %}
-        <h2>
-        <a href="{% url 'contest:contest_competitions' contest.id  %}">{{ contest.name }}</a> 
-        </h2>
-        {% endif %}
   {% block content %}<!-- default content text (typically empty) -->{% endblock %}
     <footer>
     <img width=100 src="{% static 'contest/img/nitrocropped.png' %}">
     <nav>
       <a href="/admin">Admin</a>
       <a href="/contest">Contests</a>
+        {% if contest %}
+        <a href="{% url 'contest:contest_competitions' contest.id  %}">{{ contest.name }}</a> 
+        {% endif %}
     </nav>
     </footer>
 </body>

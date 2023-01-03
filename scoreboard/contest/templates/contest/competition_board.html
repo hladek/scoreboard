@@ -2,20 +2,133 @@
 {% block content %}
 <center>
 <h3>{{competition.name}}</h3>
+{% if competition.status == "OPEN" %}
+<div class="container">
+        <h3>
+            <span id="minute" class="time">00</span>:
+            <span id="second" class="time">00</span>:
+            <span id="msecond" class="time">00</span>
+        </h3>
 
+        <div class="buttons">
+            <button class="btn" id="start">Start</button>
+            <button class="btn" id="stop">Stop</button>
+            <button class="btn" id="reset">Reset</button>
+        </div>
+    </div>
 <table>
     <tr>
-  {% for item in results %}
+  {% for item in preliminary_results %}
   <td><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a><br> {{item.description}} </td>
   {% endfor %}
   </tr>
     <tr>
-  {% for item in results %}
-    <td>{{ item.max_score }}</td>
+  {% for item in preliminary_results %}
+  <td>{{ item.max_score }} </td>
   {% endfor %}
   </tr>
 </table>
+{% endif %}
 
+{% if competition.status == "CLOSED" %}
+<table>
+    <tr>
+    <td> Team name </td> <td>Score </td> <td> Jury Comment</td>
+    </tr>
+  {% for item in results %}
+  <tr>
+  <td> {{item.team.name}}</td> <td>{{item.score}} </td> <td> {{item.comment}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% if competition.status == "NEW" %}
+Get ready !!!
+{% endif %}
 {% include "contest/runs.html"  %}
 </center>
+<script>
+// https://github.com/priyansh70/Stopwatch/blob/main/js/script.js
+let minute = document.getElementById('minute');
+let second = document.getElementById('second');
+let msecond = document.getElementById('msecond');
+let start = document.getElementById('start');
+let stop = document.getElementById('stop');
+let reset = document.getElementById('reset');
+
+let hr = 0;
+let min = 0;
+let sec = 0;
+let count = 0;
+
+let timer = false;
+
+start.addEventListener('click', function () {
+    timer = true;
+    stopwatch();
+});
+
+stop.addEventListener('click', function () {
+    timer = false;
+});
+
+
+reset.addEventListener('click', function () {
+    timer = false;
+    hr = 0;
+    min = 0;
+    sec = 0;
+    count = 0;
+    minute.textContent = "00";
+    second.textContent = "00";
+    msecond.textContent = "00";
+});
+
+function stopwatch() {
+    if (timer) {
+        count++;
+        if (count == 100) {
+            sec++;
+            count = 0;
+        }
+
+        if (sec == 60) {
+            min++;
+            sec = 0;
+        }
+
+        if (min == 60) {
+            hr++;
+            min = 0;
+            sec = 0;
+        }
+
+        let hrString = hr;
+        let minString = min;
+        let secString = sec;
+        let countString = count;
+
+        if (hr < 10) {
+            hrString = "0" + hrString;
+        }
+
+        if (min < 10) {
+            minString = "0" + minString;
+        }
+
+        if (sec < 10) {
+            secString = "0" + secString;
+        }
+
+        if (count < 10) {
+            countString = "0" + countString;
+        }
+
+        minute.textContent = minString;
+        second.textContent = secString;
+        msecond.textContent = countString;
+        setTimeout(stopwatch, 10);
+    }
+}
+    </script>
 {% endblock %}
