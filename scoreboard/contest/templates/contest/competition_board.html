@@ -18,11 +18,13 @@
     </div>
 <table>
     <tr>
+  <td>Team name</td>
   {% for item in preliminary_results %}
-  <td><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a><br> {{item.description}} </td>
+  <td><a href="{% url 'contest:contest_team' item.team_id  %}">{{ item.team.name }}</a><br> {{item.team.description}} </td>
   {% endfor %}
   </tr>
     <tr>
+        <td>Best run</td>
   {% for item in preliminary_results %}
   <td>{{ item.max_score }} </td>
   {% endfor %}

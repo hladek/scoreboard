@@ -14,7 +14,7 @@ def competition_board(request, competition_id):
         # TODO add timer
         competition = Competition.objects.get(pk=competition_id)
         results = Result.objects.filter(competition_id=competition_id).order_by("score").select_related()
-        preliminary_results = competition.runs.all().annotate(max_score=Max("run__score")).filter(id=competition_id)
+        preliminary_results = Run.objects.values("team_id").annotate(max_score=Max("score")).filter(competition_id=competition_id)
         runs = Run.objects.filter(competition_id=competition.id).order_by("-score","team__name","start_time")
     except Competition.DoesNotExist:
         raise Http404("Competition does not exist")
@@ -48,9 +48,11 @@ def contest_competitions(request,contest_id):
 
 def contest_team(request,team_id):
     team = Team.objects.get(pk=team_id)
-    competitions = team.competition_set.all().annotate(max_score=Max("run__score"))
+    #competitions = team.competition_set.all().annotate(max_score=Max("run__score"))
     #.filter(run__competition_id="competition__id")
     # todo calculate team results for each competition
+    # TODO
+    competitions = []
     return render(request,"contest/teams.html",{"contest":team.contest,"team":team,"competitions":competitions})
 
 def index(request):
