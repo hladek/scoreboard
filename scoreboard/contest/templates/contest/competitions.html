@@ -6,10 +6,6 @@
 <div>
 {{contest.rules}}
 </div>
-<a href="/contest">Other contests</a>
-<h2>Participants</h2>
-
-<a href="{% url 'contest:frame_participants' contest.id  %}"> View in frame</a>
 <ul>
 {% for item in teams %}
 <li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}} 
@@ -27,11 +23,9 @@
 </li>
 {% endfor %}
 </ul>
-<h2>Competitions</h2>
-<a href="{% url 'contest:frame_competitions' contest.id  %}"> View in frame</a>
 <table>
     <tr>
-        <td>Name </td><td> Status</td><td> Winner</td> <td>Points</td> <td>Comment</td>
+        <td>Competition name </td><td> Status</td><td> Winner</td> <td>Points</td> <td>Comment</td>
     </tr>
 {% for item in competitions %}
 <tr>

@@ -1,4 +1,5 @@
 <table>
+    {% if runs %}
   <tr>
     <td>Name</td>
     <td> Start</td>
@@ -15,4 +16,7 @@
     <td>{{ item.judge_comment }}</td>
   </tr>
   {% endfor %}
+  {% else %}
+  no results yet
+  {% endif %}
 </table>

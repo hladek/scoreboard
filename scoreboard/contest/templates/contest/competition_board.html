@@ -1,13 +1,12 @@
 {% extends "contest/base.html" %}
 {% block content %}
-
+<center>
 <h3>{{competition.name}}</h3>
-<a href="{% url 'contest:frame_board' competition.id  %}"> View in frame</a>
 
 <table>
     <tr>
   {% for item in results %}
-    <td><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> </td>
+  <td><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a><br> {{item.description}} </td>
   {% endfor %}
   </tr>
     <tr>
@@ -17,15 +16,6 @@
   </tr>
 </table>
 
-<h3>Participants</h3>
-<ul>
-  {% for item in participants %}
-    <li><a href="{% url 'contest:contest_team' item.id  %}">{{ item.name }}</a> {{item.description}}</li>
-  {% endfor %}
-</ul>
-
-<h3>Runs</h3>
-<a href="{% url 'contest:frame_runs' competition.id  %}"> View in frame</a>
 {% include "contest/runs.html"  %}
-
+</center>
 {% endblock %}

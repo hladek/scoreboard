@@ -9,15 +9,6 @@ from .models import Competition,Contest,Run,Team,ItemStates
 def get_competition_results(competition):
     return competition.participants.all().annotate(max_score=Max("run__score")).filter(run__competition_id=competition.id)
 
-def frame_board(request,competition_id):
-    competition = Competition.objects.get(pk=competition_id)
-    parti = get_competition_results(competition)
-    return render(request, 'contest/frame_board.html', {"competition":competition,"results":parti})
-
-def frame_runs(request,competition_id):
-    competition = Competition.objects.get(pk=competition_id)
-    runs = Run.objects.filter(competition_id=competition.id).order_by("-score","team__name","start_time")
-    return render(request, 'contest/frame_runs.html', {"runs":runs})
 
 # ...
 def competition_board(request, competition_id):
@@ -38,15 +29,6 @@ def contest_competitions(request,contest_id):
     teams = contest.team_set.select_related().all()
     return render(request,"contest/competitions.html",{"contest":contest,"teams":teams,"competitions":competitions})
 
-def frame_competitions(request,contest_id):
-    contest = Contest.objects.get(pk=contest_id)
-    competitions = contest.competition_set.select_related()
-    return render(request,"contest/frame_competitions.html",{"competitions":competitions})
-
-def frame_participants(request,contest_id):
-    contest = Contest.objects.get(pk=contest_id)
-    teams = contest.team_set.select_related().all()
-    return render(request,"contest/frame_participants.html",{"teams":teams})
 
 def contest_team(request,team_id):
     team = Team.objects.get(pk=team_id)
