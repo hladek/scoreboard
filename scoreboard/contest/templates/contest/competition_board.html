@@ -20,11 +20,11 @@
     <tr>
   <td>Team name</td>
   {% for item in preliminary_results %}
-  <td><a href="{% url 'contest:contest_team' item.team_id  %}">{{ item.team.name }}</a><br> {{item.team.description}} </td>
+  <td><a href="{% url 'contest:contest_team' item.team_id  %}">{{ item.team_name }}</a><br> {{item.team.description}} </td>
   {% endfor %}
   </tr>
     <tr>
-        <td>Best run</td>
+        <td>Best run score </td>
   {% for item in preliminary_results %}
   <td>{{ item.max_score }} </td>
   {% endfor %}
@@ -35,7 +35,7 @@
 {% if competition.status == "CLOSED" %}
 <table>
     <tr>
-    <td> Team name </td> <td>Score </td> <td> Jury Comment</td>
+    <td> Team name </td> <td>Final Score </td> <td> Jury Comment</td>
     </tr>
   {% for item in results %}
   <tr>

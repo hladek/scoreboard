@@ -61,6 +61,8 @@ class Result(models.Model):
 class Run(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    # in seconds
+    duration = models.FloatField(null=True)
     score = models.FloatField(help_text="Assigned by a Judge",blank=True,null=True)
     judge_comment = models.CharField(max_length=200,help_text="Comment by a Judge",blank=True)
     # TODO - add constraint to Team to current competition contest
@@ -68,7 +70,11 @@ class Run(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="source competition")
 
     @property
-    def duration(self):
+    def get_duration(self):
+        if self.duration:
+            return self.duration
+        if not self.end_time:
+            return None
         dur = self.end_time - self.start_time
         return dur
 
