@@ -28,7 +28,7 @@ def competition_board(request, competition_id):
 def contest_competitions(request,contest_id):
     contest = Contest.objects.get(pk=contest_id)
     # TODO sort
-    competitions = Competition.objects.filter(contest_id=contest_id)
+    competitions = Competition.objects.filter(contest_id=contest_id,status__in=["OPEN","CLOSED"])
     teams = Team.objects.filter(contest_id=contest_id)
     #team_table = []
     over = []
@@ -42,7 +42,7 @@ def contest_competitions(request,contest_id):
     for team in teams:
         line = []
         for competition in competitions: 
-            if competition.id in over[team.id]:
+            if competition.id in over[team.id] and competition.status == "CLOSED":
                 line.append(over[team.id][competition.id])
             else:
                 line.append(None)
@@ -57,8 +57,8 @@ def contest_team(request,team_id):
 
 def index(request):
     contests = list(Contest.objects.all())
-    active_contests = filter(lambda x:x.status == ItemStates.OPEN or x.status == ItemStates.CLOSED,contests)
-    past_contests = filter(lambda x:x.status == ItemStates.OLD,contests)
+    active_contests = filter(lambda x:x.status == ItemStates.OPEN ,contests)
+    past_contests = filter(lambda x:x.status == ItemStates.CLOSED,contests)
     return render(request,"contest/index.html",{"active_contests":active_contests,"past_contests":past_contests})
 # Create your views here.
 from . import views

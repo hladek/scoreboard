@@ -1,22 +1,21 @@
 from django.db import models
 import datetime
 from django.utils.translation import gettext_lazy as _
-from ckeditor.fields import RichTextField
+#from ckeditor.fields import RichTextField
 
 # Create your models here.
 class ItemStates(models.TextChoices):
     NEW = 'NEW', _('In preparation')
-    OPEN = 'OPEN', _('Running')
-    CLOSED = 'CLOSED', _('No modifications')
-    OLD = 'OLD', _('Over')
+    OPEN = 'OPEN', _('Open')
+    CLOSED = 'CLOSED', _('Closed')
+    DELETED = 'DELETED', _('Deleted')
 
 class Contest(models.Model):
     # Contest contains more competitions
     name = models.CharField(max_length=200,help_text="Name of the contest. ")
     description = models.TextField(default="",blank=True,help_text="Short description of the contest, such as time and place")
-    rules = RichTextField(default="",blank=True,help_text="Further description of the contest, such as rules and conditions")
     status = models.CharField(
-        max_length=6,
+        max_length=24,
         choices=ItemStates.choices,
         default=ItemStates.NEW,
     )
@@ -28,6 +27,8 @@ class Team(models.Model):
     name = models.CharField(max_length=200,help_text="Identifier of the team")
     description = models.TextField(default="",blank=True,help_text="Team members and affiliation")
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE,help_text="a team belongs to a contest")
+
+    token = models.CharField(max_length=200,default="",blank=True,help_text="Token for run submissions")
     def __str__(self):
         return "Team:{}@{}".format(self.name, self.contest.name)
 
@@ -35,9 +36,8 @@ class Team(models.Model):
 class Competition(models.Model):
     name = models.CharField(max_length=200,help_text="Name of the competition.")
     description = models.TextField(default="",blank=True,help_text="Rules of the competition and description of the task,")
-    rules = RichTextField(default="",blank=True,help_text="Further description of the contest, such as rules and conditions")
     status = models.CharField(
-        max_length=6,
+        max_length=24,
         choices=ItemStates.choices,
         default=ItemStates.NEW,
     )
@@ -60,9 +60,9 @@ class Result(models.Model):
 
 class Run(models.Model):
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True,blank=True)
     # in seconds
-    duration = models.FloatField(null=True)
+    duration = models.FloatField(null=True,blank=True)
     score = models.FloatField(help_text="Assigned by a Judge",blank=True,null=True)
     judge_comment = models.CharField(max_length=200,help_text="Comment by a Judge",blank=True)
     # TODO - add constraint to Team to current competition contest
@@ -75,7 +75,7 @@ class Run(models.Model):
             return self.duration
         if not self.end_time:
             return None
-        dur = self.end_time - self.start_time
+        dur = (self.end_time - self.start_time).total_seconds()
         return dur
 
     def __str__(self):
