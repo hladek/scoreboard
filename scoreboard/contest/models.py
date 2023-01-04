@@ -48,7 +48,7 @@ class Competition(models.Model):
         return "Competition:{}@{}".format(self.name, self.contest.name)
 
 class Result(models.Model):
-    score = models.FloatField()
+    score = models.IntegerField()
     comment = models.TextField(default="",blank=True,help_text="Comment to the participation")
     # TODO - add constraint to Team to current contest
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
@@ -60,23 +60,13 @@ class Result(models.Model):
 
 class Run(models.Model):
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField(null=True,blank=True)
     # in seconds
-    duration = models.FloatField(null=True,blank=True)
-    score = models.FloatField(help_text="Assigned by a Judge",blank=True,null=True)
+    duration = models.IntegerField(blank=True)
+    score = models.IntegerField(help_text="Assigned by a Judge",blank=True,null=True)
     judge_comment = models.CharField(max_length=200,help_text="Comment by a Judge",blank=True)
     # TODO - add constraint to Team to current competition contest
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Who performed the run")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="source competition")
-
-    @property
-    def get_duration(self):
-        if self.duration:
-            return self.duration
-        if not self.end_time:
-            return None
-        dur = (self.end_time - self.start_time).total_seconds()
-        return dur
 
     def __str__(self):
         return "Run:{}@{}".format(self.start_time, self.team.name)
