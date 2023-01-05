@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import Http404
 from django.shortcuts import render
+from djang.core.exceptions import PermissionDenied, ValidationError,BadRequest
 
 from django.db.models import Max
 from .models import Competition,Contest,Run,Team,ItemStates,Result
 import collections
-
+import json
 
 
 # ...
@@ -60,6 +61,69 @@ def index(request):
     active_contests = filter(lambda x:x.status == ItemStates.OPEN ,contests)
     past_contests = filter(lambda x:x.status == ItemStates.CLOSED,contests)
     return render(request,"contest/index.html",{"active_contests":active_contests,"past_contests":past_contests})
+
+## Automated run submission
+## Request is POST json with items:
+## teamtoken = access token from team Table, set by judge
+## competitiontoken = access token from Competition table set by judge
+## action = start or stop
+## 
+## Method will search team and competition according to the token.
+## if action is start, it will create new run. It will do nothing if there is previous run with zero duration
+## if action is stop, it will search previous run with zero duration and sets its duration with current time
+def robot_action(request):
+    # check request
+    req = {}
+    if request.type != "POST":
+        raise BadRequest()
+    try:
+        # parse request
+        req = json.loads(request.body)
+    except:
+        raise BadRequest()
+    # validate request
+    if "teamtoken" not in req:
+        raise ValidationError()
+    if "competitiontoken" not in req:
+        raise ValidationError()
+    if "action" not in req:
+        raise ValidationError()
+    if req["action"] not in set(["start","stop"]):
+        raise ValidationError()
+    # execute request
+    team = Team.objects.get(token=req["teamtoken"])
+    if team is None:
+        raise PermissionDenied()
+    competition = Competition.objects.get(token=req["competitiontoken"])
+    if competition is None:
+        raise PermissionDenied()
+    runs = Run.objects.filter(team_id=team.id,competition_id=competition.id).order_by("-start_time").limit(1)
+    is_running = False
+    last_run = None
+    response = "error"
+    if len(runs) == 1:
+        last_run = runs[0]
+        if last_run.duration == 0:
+            is_running = True
+    if req["action"] == "start":
+        if is_running:
+            response = "already_running"
+        elif last_run is not None:
+            run = Run(start_time=datetime.now(),team=team,competition=competition)
+            run.save()
+            response = "started: " + run.start_time.isoformat()
+    if req["action"] == "stop":
+        if is_running:
+            duration = (datetime.now() - last_run.start_time).total_seconds()
+            last_run.duration = duration
+            last_run.save()
+            response = "end: " + str(duration)
+        else:
+            response = "not_running"
+    return json.dumps({"result":response})
+
+
+
 # Create your views here.
 from . import views
 

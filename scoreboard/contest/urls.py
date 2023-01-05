@@ -9,4 +9,5 @@ urlpatterns = [
     path('contest/<int:contest_id>', views.contest_competitions, name='contest_competitions'),
     path('team/<int:team_id>', views.contest_team, name='contest_team'),
     path('competition_board/<int:competition_id>', views.competition_board, name='competition_board'),
+    path('robot_action', views.robot_action),
 ]

@@ -28,7 +28,7 @@ class Team(models.Model):
     description = models.TextField(default="",blank=True,help_text="Team members and affiliation")
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE,help_text="a team belongs to a contest")
 
-    token = models.CharField(max_length=200,default="",blank=True,help_text="Token for run submissions")
+    token = models.CharField(unique=True,max_length=200,default="",blank=True,help_text="Token for run submissions")
     def __str__(self):
         return "Team:{}@{}".format(self.name, self.contest.name)
 
@@ -43,7 +43,7 @@ class Competition(models.Model):
     )
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     runs = models.ManyToManyField(Team,through="Run",related_name="runs",help_text="Competition has more runs from different teams.")
-
+    token = models.CharField(unique=True,max_length=200,default="",blank=True,help_text="Token for run submissions")
     def __str__(self):
         return "Competition:{}@{}".format(self.name, self.contest.name)
 
