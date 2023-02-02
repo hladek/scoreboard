@@ -28,7 +28,7 @@ class Team(models.Model):
     description = models.TextField(default="",blank=True,help_text="Team members and affiliation")
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE,help_text="a team belongs to a contest")
 
-    token = models.CharField(unique=True,max_length=200,default="",blank=True,help_text="Token for run submissions")
+    token = models.CharField(unique=True,null=True,max_length=200,default="",blank=True,help_text="Token for run submissions")
     def __str__(self):
         return "Team:{}@{}".format(self.name, self.contest.name)
 
@@ -51,6 +51,7 @@ class Result(models.Model):
     score = models.IntegerField()
     comment = models.TextField(default="",blank=True,help_text="Comment to the participation")
     # TODO - add constraint to Team to current contest
+    # https://github.com/jazzband/django-smart-selects
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     class Meta:
@@ -65,6 +66,7 @@ class Run(models.Model):
     score = models.IntegerField(help_text="Assigned by a Judge",blank=True,null=True)
     judge_comment = models.CharField(max_length=200,help_text="Comment by a Judge",blank=True)
     # TODO - add constraint to Team to current competition contest
+    # https://github.com/jazzband/django-smart-selects
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Who performed the run")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="source competition")
 

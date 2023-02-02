@@ -17,11 +17,11 @@
 
         {% endfor %}
     </tr>
-{% for line in over %}
+{% for line in table %}
 <tr>
     <td><a href="{% url 'contest:contest_team' line.team.id  %}">{{ line.team.name }}</a></td>
   {% for item in line.results %}
-  <td> {{ item.score }}</td>
+  <td> {{ item }}</td>
   {% endfor %}
   </tr>
 {% endfor %}

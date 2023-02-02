@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
 from django.shortcuts import render
-from djang.core.exceptions import PermissionDenied, ValidationError,BadRequest
+from django.core.exceptions import PermissionDenied, ValidationError,BadRequest
 
 from django.db.models import Max
 from .models import Competition,Contest,Run,Team,ItemStates,Result
@@ -12,7 +12,6 @@ import json
 # ...
 def competition_board(request, competition_id):
     try:
-        # TODO add timer
         competition = Competition.objects.get(pk=competition_id)
         results = Result.objects.filter(competition_id=competition_id).order_by("score").select_related()
         pr = Run.objects.values("team_id").annotate(max_score=Max("score")).filter(competition_id=competition_id)
@@ -36,19 +35,36 @@ def contest_competitions(request,contest_id):
     i2t = {}
     i2c = {}
     over = collections.defaultdict(dict)
+    # results of teams in competitions
     for team in teams:
         for result in team.result_set.all():
-            over[team.id][result.competition.id] = result 
-    over2 = []
+            over[team.id][result.competition.id] = result.score
+
+    # get preliminary results - best runs for each team and each running competition
+    running = collections.defaultdict(dict)
+    for competition in competitions: 
+        if competition.status != "OPEN":
+            continue
+        pr = Run.objects.values("team_id").annotate(max_score=Max("score")).filter(competition_id=competition.id)
+        for r in pr:
+            running[r["team_id"]][competition.id] = r["max_score"]
+    # transform matrix into table
+    table = []
+    # one row for each team
     for team in teams:
         line = []
+        # one column for each competition
         for competition in competitions: 
+            # Final results from judges
             if competition.id in over[team.id] and competition.status == "CLOSED":
                 line.append(over[team.id][competition.id])
+            # preliminary results from runs
+            elif competition.id in running[team.id] and competition.status == "OPEN":
+                line.append(running[team.id][competition.id])
             else:
                 line.append(None)
-        over2.append({"team":team,"results":line})
-    return render(request,"contest/competitions.html",{"contest":contest,"teams":teams,"competitions":competitions,"over":over2})
+        table.append({"team":team,"results":line})
+    return render(request,"contest/competitions.html",{"contest":contest,"teams":teams,"competitions":competitions,"table":table})
 
 
 def contest_team(request,team_id):
