@@ -1,6 +1,8 @@
 from django.db import models
 import datetime
 from django.utils.translation import gettext_lazy as _
+
+from smart_selects.db_fields import ChainedForeignKey
 #from ckeditor.fields import RichTextField
 
 # Create your models here.
@@ -52,7 +54,9 @@ class Result(models.Model):
     comment = models.TextField(default="",blank=True,help_text="Comment to the participation")
     # TODO - add constraint to Team to current contest
     # https://github.com/jazzband/django-smart-selects
+    #team = ChainedForeignKey(Team,chained_field="competition.contest",chained_model_field="contest", on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     team = models.ForeignKey(Team, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
+    #competition = ChainedForeignKey(Competition, chained_field="competiion", on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE,help_text="Competition is one part of contest.")
     class Meta:
         unique_together = (("team","competition"),)

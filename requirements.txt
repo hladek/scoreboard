@@ -1,6 +1,6 @@
 django
 django-environ
-django-ckeditor
+django-smart-selects
 daphne
 Twisted[tls,http2]
 mysqlclient

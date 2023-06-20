@@ -60,15 +60,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # https://django-ckeditor.readthedocs.io/en/latest/
-    "ckeditor",
+    "smart_selects",
 ]
 
-#CKEDITOR_CONFIGS = {
-#    'default': {
-#        'toolbar': 'Basic',
-#    },
-#}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -145,6 +139,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT= env("STATIC_ROOT")
+
+# for smart_selects
+JQUERY_URL = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
